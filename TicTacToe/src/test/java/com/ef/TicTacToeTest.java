@@ -3,14 +3,12 @@ package com.ef;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class TicTacToeTest {
 
@@ -38,18 +36,18 @@ public class TicTacToeTest {
 
     @Test
     public void gameShouldStartWithNewGameBoard() {
-        Map<String, Player> gameBoard = game.getGameBoard();
+        Map<Cell, Player> gameBoard = game.getGameBoard();
 
-        Map<String, Player> expectedBoard = new HashMap<String, Player>();
-        expectedBoard.put("a1", null);
-        expectedBoard.put("a2", null);
-        expectedBoard.put("a3", null);
-        expectedBoard.put("b1", null);
-        expectedBoard.put("b2", null);
-        expectedBoard.put("b3", null);
-        expectedBoard.put("c1", null);
-        expectedBoard.put("c2", null);
-        expectedBoard.put("c3", null);
+        Map<Cell, Player> expectedBoard = new HashMap<Cell, Player>();
+        expectedBoard.put(Cell.A1, null);
+        expectedBoard.put(Cell.A2, null);
+        expectedBoard.put(Cell.A3, null);
+        expectedBoard.put(Cell.B1, null);
+        expectedBoard.put(Cell.B2, null);
+        expectedBoard.put(Cell.B3, null);
+        expectedBoard.put(Cell.C1, null);
+        expectedBoard.put(Cell.C2, null);
+        expectedBoard.put(Cell.C3, null);
 
         assertNotNull("Game board is null!", gameBoard);
         assertEquals(expectedBoard, gameBoard);
@@ -57,25 +55,25 @@ public class TicTacToeTest {
 
     @Test
     public void playerXShouldWinWithA1ThruA3Sweep() {
-        game.move("a1", playerX);
+        game.move(Cell.A1, playerX);
         assertFalse(game.hasWinner());
-        game.move("b1", playerO);
+        game.move(Cell.B1, playerO);
         assertFalse(game.hasWinner());
-        game.move("a2", playerX);
+        game.move(Cell.A2, playerX);
         assertFalse(game.hasWinner());
-        game.move("b2", playerO);
+        game.move(Cell.B2, playerO);
         assertFalse(game.hasWinner());
-        game.move("a3", playerX);
+        game.move(Cell.A3, playerX);
         assertTrue(game.hasWinner());
     }
 
     @Test
     public void noWinnerFoundInA1ThruA3() {
-        game.move("a1", playerX);
+        game.move(Cell.A1, playerX);
         assertFalse(game.hasWinner());
-        game.move("a2", playerO);
+        game.move(Cell.A2, playerO);
         assertFalse(game.hasWinner());
-        game.move("a3", playerX);
+        game.move(Cell.A3, playerX);
         assertFalse(game.hasWinner());
     }
 
