@@ -3,7 +3,6 @@ package com.ef;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +76,21 @@ public class TicTacToeTest {
         assertFalse(game.hasWinner());
     }
 
+    @Test
+    public void gameDeclaresWinner() {
+        game.move(Cell.A1, playerX);
+        game.move(Cell.B1, playerO);
+        game.move(Cell.A2, playerX);
+        game.move(Cell.B2, playerO);
+        game.move(Cell.A3, playerX);
+
+
+        assertTrue(game.hasWinner());
+        Player winningPlayer = game.getWinner();
+
+        assertNotNull("Winning Player is null", winningPlayer);
+        assertEquals(playerX, winningPlayer);
+    }
 
 }
 

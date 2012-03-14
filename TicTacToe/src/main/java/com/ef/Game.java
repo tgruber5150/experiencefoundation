@@ -6,6 +6,7 @@ public class Game {
 
     private List<Player> players;
     private Map<Cell, Player> gameBoard;
+    private Player winner;
 
     public void startGame() {
         addPlayersToGame();
@@ -73,12 +74,26 @@ public class Game {
             }
         }
 
-        return containsOnePlayerType(containsX, containsO);
+        boolean containsOnePlayer = containsOnePlayerType(containsX, containsO);
+
+        if(containsOnePlayer) {
+            setWinner(playersFromCells.get(0));
+        }
+
+        return containsOnePlayer;
     }
 
     private boolean containsOnePlayerType(boolean containsX, boolean containsO) {
         return containsX && !containsO || !containsX && containsO;
     }
 
+
+    public Player getWinner() {
+        return this.winner;
+    }
+
+    private void setWinner(Player player) {
+        this.winner = player;
+    }
 
 }
