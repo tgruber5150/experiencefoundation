@@ -5,8 +5,7 @@ import java.util.*;
 public class Game {
 
     private List<Player> players;
-    private Map<Cell, Player> gameBoard;
-    private Player winner;
+    private GameBoard<Cell, Player> gameBoard;
 
     public void startGame() {
         addPlayersToGame();
@@ -24,76 +23,45 @@ public class Game {
     }
 
     private void resetGameBoard() {
-        gameBoard = new HashMap<Cell, Player>();
-        gameBoard.put(Cell.A1, null);
-        gameBoard.put(Cell.A2, null);
-        gameBoard.put(Cell.A3, null);
-        gameBoard.put(Cell.B1, null);
-        gameBoard.put(Cell.B2, null);
-        gameBoard.put(Cell.B3, null);
-        gameBoard.put(Cell.C1, null);
-        gameBoard.put(Cell.C2, null);
-        gameBoard.put(Cell.C3, null);
+        gameBoard = new GameBoard<Cell, Player>();
     }
 
     public List<Player> getPlayers() {
         return this.players;
     }
 
-    public Map<Cell, Player> getGameBoard() {
+    public GameBoard<Cell, Player> getGameBoard() {
         return this.gameBoard;
     }
 
 
     public void move(Cell cell, Player player) {
-       getGameBoard().put(cell, player);
+       if(getGameBoard().get(cell) == null) {
+           getGameBoard().put(cell, player);
+           hasWinner();
+       }
     }
 
     public boolean hasWinner() {
-        return isWinnerFoundInA1ThruA3();
-    }
-
-    private boolean isWinnerFoundInA1ThruA3() {
         List<Player> playersFromCells = new ArrayList<Player>();
         playersFromCells.add(getGameBoard().get(Cell.A1));
         playersFromCells.add(getGameBoard().get(Cell.A2));
         playersFromCells.add(getGameBoard().get(Cell.A3));
 
-        if(playersFromCells.contains(null)) {
-            return false;
+        if(getGameBoard().isWinnerFound(playersFromCells)) {
+            return true;
         }
 
-        boolean containsX = false;
-        boolean containsO = false;
-        for(Player player : playersFromCells) {
-            if(PlayerType.X == player.getPlayerType()) {
-                containsX = true;
-            }
-            if(PlayerType.O == player.getPlayerType()) {
-                containsO = true;
-            }
+        List<Player> playersFromBCells = new ArrayList<Player>();
+        playersFromBCells.add(getGameBoard().get(Cell.B1));
+        playersFromBCells.add(getGameBoard().get(Cell.B2));
+        playersFromBCells.add(getGameBoard().get(Cell.B3));
+
+        if(getGameBoard().isWinnerFound(playersFromBCells)) {
+            return true;
         }
 
-        boolean containsOnePlayer = containsOnePlayerType(containsX, containsO);
-
-        if(containsOnePlayer) {
-            setWinner(playersFromCells.get(0));
-        }
-
-        return containsOnePlayer;
-    }
-
-    private boolean containsOnePlayerType(boolean containsX, boolean containsO) {
-        return containsX && !containsO || !containsX && containsO;
-    }
-
-
-    public Player getWinner() {
-        return this.winner;
-    }
-
-    private void setWinner(Player player) {
-        this.winner = player;
+        return false;
     }
 
 }

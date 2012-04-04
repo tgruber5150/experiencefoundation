@@ -35,20 +35,12 @@ public class TicTacToeTest {
 
     @Test
     public void gameShouldStartWithNewGameBoard() {
-        Map<Cell, Player> gameBoard = game.getGameBoard();
+        GameBoard<Cell, Player> gameBoard = game.getGameBoard();
 
         Map<Cell, Player> expectedBoard = new HashMap<Cell, Player>();
-        expectedBoard.put(Cell.A1, null);
-        expectedBoard.put(Cell.A2, null);
-        expectedBoard.put(Cell.A3, null);
-        expectedBoard.put(Cell.B1, null);
-        expectedBoard.put(Cell.B2, null);
-        expectedBoard.put(Cell.B3, null);
-        expectedBoard.put(Cell.C1, null);
-        expectedBoard.put(Cell.C2, null);
-        expectedBoard.put(Cell.C3, null);
 
         assertNotNull("Game board is null!", gameBoard);
+        assertTrue(gameBoard.isEmpty());
         assertEquals(expectedBoard, gameBoard);
     }
 
@@ -67,6 +59,34 @@ public class TicTacToeTest {
     }
 
     @Test
+    public void playerXShouldWinWithB1ThruB3Sweep() {
+        game.move(Cell.B1, playerX);
+        assertFalse(game.hasWinner());
+        game.move(Cell.C1, playerO);
+        assertFalse(game.hasWinner());
+        game.move(Cell.B2, playerX);
+        assertFalse(game.hasWinner());
+        game.move(Cell.C2, playerO);
+        assertFalse(game.hasWinner());
+        game.move(Cell.B3, playerX);
+        assertTrue(game.hasWinner());
+    }
+
+    @Test
+    public void playerXShouldWinWithA1ThruC1Sweep() {
+        game.move(Cell.A1, playerX);
+        assertFalse(game.hasWinner());
+        game.move(Cell.C2, playerO);
+        assertFalse(game.hasWinner());
+        game.move(Cell.B1, playerX);
+        assertFalse(game.hasWinner());
+        game.move(Cell.C3, playerO);
+        assertFalse(game.hasWinner());
+        game.move(Cell.C1, playerX);
+        assertTrue(game.hasWinner());
+    }
+
+    @Test
     public void noWinnerFoundInA1ThruA3() {
         game.move(Cell.A1, playerX);
         assertFalse(game.hasWinner());
@@ -77,20 +97,12 @@ public class TicTacToeTest {
     }
 
     @Test
-    public void gameDeclaresWinner() {
+    public void cellShouldContainOnePlayer() {
+        game.move(Cell.A1, playerO);
         game.move(Cell.A1, playerX);
-        game.move(Cell.B1, playerO);
-        game.move(Cell.A2, playerX);
-        game.move(Cell.B2, playerO);
-        game.move(Cell.A3, playerX);
-
-
-        assertTrue(game.hasWinner());
-        Player winningPlayer = game.getWinner();
-
-        assertNotNull("Winning Player is null", winningPlayer);
-        assertEquals(playerX, winningPlayer);
+        assertEquals(playerO.getPlayerType(), game.getGameBoard().get(Cell.A1).getPlayerType());
     }
+
 
 }
 
