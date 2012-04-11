@@ -30,38 +30,16 @@ public class Game {
         return this.players;
     }
 
+
     public GameBoard<Cell, Player> getGameBoard() {
         return this.gameBoard;
     }
 
-
     public void move(Cell cell, Player player) {
        if(getGameBoard().get(cell) == null) {
            getGameBoard().put(cell, player);
-           hasWinner();
+           getGameBoard().isWinner();
        }
-    }
-
-    public boolean hasWinner() {
-        List<Player> playersFromCells = new ArrayList<Player>();
-        playersFromCells.add(getGameBoard().get(Cell.A1));
-        playersFromCells.add(getGameBoard().get(Cell.A2));
-        playersFromCells.add(getGameBoard().get(Cell.A3));
-
-        if(getGameBoard().isWinnerFound(playersFromCells)) {
-            return true;
-        }
-
-        List<Player> playersFromBCells = new ArrayList<Player>();
-        playersFromBCells.add(getGameBoard().get(Cell.B1));
-        playersFromBCells.add(getGameBoard().get(Cell.B2));
-        playersFromBCells.add(getGameBoard().get(Cell.B3));
-
-        if(getGameBoard().isWinnerFound(playersFromBCells)) {
-            return true;
-        }
-
-        return false;
     }
 
 }

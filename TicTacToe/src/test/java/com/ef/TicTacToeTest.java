@@ -3,9 +3,7 @@ package com.ef;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -44,63 +42,49 @@ public class TicTacToeTest {
         assertEquals(expectedBoard, gameBoard);
     }
 
-    @Test
-    public void playerXShouldWinWithA1ThruA3Sweep() {
-        game.move(Cell.A1, playerX);
-        assertFalse(game.hasWinner());
-        game.move(Cell.B1, playerO);
-        assertFalse(game.hasWinner());
-        game.move(Cell.A2, playerX);
-        assertFalse(game.hasWinner());
-        game.move(Cell.B2, playerO);
-        assertFalse(game.hasWinner());
-        game.move(Cell.A3, playerX);
-        assertTrue(game.hasWinner());
-    }
+    private static final List<List<Cell>> expectedKeys = new ArrayList<List<Cell>>(){{
+       add(Arrays.asList(Cell.A1, Cell.A2, Cell.A3));
+       add(Arrays.asList(Cell.B1, Cell.B2, Cell.B3));
+       add(Arrays.asList(Cell.C1, Cell.C2, Cell.C3));
+
+       add(Arrays.asList(Cell.A1, Cell.B1, Cell.C1));
+       add(Arrays.asList(Cell.A2, Cell.B2, Cell.C2));
+       add(Arrays.asList(Cell.A3, Cell.B3, Cell.C3));
+
+       add(Arrays.asList(Cell.A1, Cell.B2, Cell.C3));
+       add(Arrays.asList(Cell.A3, Cell.B2, Cell.C1));
+    }};
 
     @Test
-    public void playerXShouldWinWithB1ThruB3Sweep() {
-        game.move(Cell.B1, playerX);
-        assertFalse(game.hasWinner());
-        game.move(Cell.C1, playerO);
-        assertFalse(game.hasWinner());
-        game.move(Cell.B2, playerX);
-        assertFalse(game.hasWinner());
-        game.move(Cell.C2, playerO);
-        assertFalse(game.hasWinner());
-        game.move(Cell.B3, playerX);
-        assertTrue(game.hasWinner());
-    }
-
-    @Test
-    public void playerXShouldWinWithA1ThruC1Sweep() {
-        game.move(Cell.A1, playerX);
-        assertFalse(game.hasWinner());
-        game.move(Cell.C2, playerO);
-        assertFalse(game.hasWinner());
-        game.move(Cell.B1, playerX);
-        assertFalse(game.hasWinner());
-        game.move(Cell.C3, playerO);
-        assertFalse(game.hasWinner());
-        game.move(Cell.C1, playerX);
-        assertTrue(game.hasWinner());
+    public void playerXShouldWinWith3InARow() {
+        for(List<Cell> key : expectedKeys) {
+            game.startGame();
+            assertFalse(game.getGameBoard().isWinner());
+            game.move(key.get(0), playerO);
+            assertFalse(game.getGameBoard().isWinner());
+            game.move(key.get(1), playerO);
+            assertFalse(game.getGameBoard().isWinner());
+            game.move(key.get(2), playerO);
+            assertTrue("Expected key: " + key, game.getGameBoard().isWinner());
+        }
     }
 
     @Test
     public void noWinnerFoundInA1ThruA3() {
         game.move(Cell.A1, playerX);
-        assertFalse(game.hasWinner());
+        assertFalse(game.getGameBoard().isWinner());
         game.move(Cell.A2, playerO);
-        assertFalse(game.hasWinner());
+        assertFalse(game.getGameBoard().isWinner());
         game.move(Cell.A3, playerX);
-        assertFalse(game.hasWinner());
+        assertFalse(game.getGameBoard().isWinner());
     }
 
     @Test
     public void cellShouldContainOnePlayer() {
         game.move(Cell.A1, playerO);
         game.move(Cell.A1, playerX);
-        assertEquals(playerO.getPlayerType(), game.getGameBoard().get(Cell.A1).getPlayerType());
+        Player actualPlayer = game.getGameBoard().get(Cell.A1);
+        assertEquals(playerO.getPlayerType(), actualPlayer.getPlayerType());
     }
 
 
