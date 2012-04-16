@@ -17,7 +17,7 @@ public class Game {
         Player player1 = new Player();
         player1.setPlayerType(PlayerType.X);
         Player player2 = new Player();
-        player2.setPlayerType(PlayerType.O);
+        player2.setPlayerType(PlayerType.0);
         players.add(player1);
         players.add(player2);
     }
